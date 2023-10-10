@@ -49,6 +49,9 @@ def osztas(szam1):
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except ZeroDivisionError:
+                 uj_terminal()
+                 print("Hiba! Nullával nem lehet osztani. Próbálja újra!")
     uj_terminal()
     szam1 /= szam2
     return szam1
@@ -75,6 +78,9 @@ def maradek(szam1):
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except ZeroDivisionError:
+                 uj_terminal()
+                 print("Hiba! Nullával nem lehet osztani. Próbálja újra!")
     uj_terminal()
     szam1 %= szam2
     return szam1
@@ -91,7 +97,7 @@ while True:
 while True:
     if menu == True:
         menu = False
-        print("1 -> Összeadás\n2 -> Kivonás\n3 -> Szorzás\n4 -> Osztás\n5 -> Hatványozás\n6 -> Maradék számítás\n7 -> Törlés\n8 -> Befejezés\n")
+        print(f"Jelenlegi összeg: {szam}\n\n1 -> Összeadás\n2 -> Kivonás\n3 -> Szorzás\n4 -> Osztás\n5 -> Hatványozás\n6 -> Maradék számítás\n7 -> Törlés\n8 -> Kilépés\n")
         while True:
             try:
                 opcio = int(input("Válasszon az alábbiak közül egy műveletet!\n"))
@@ -101,31 +107,20 @@ while True:
         uj_terminal()
     if opcio == 1:
        szam = osszeadas(szam)
-       print(f"Jelenlegi összeg: {szam}\n")
-       menu = True
     elif opcio == 2:
        szam = kivonas(szam)
-       print(f"Jelenlegi összeg: {szam}\n")
-       menu = True
     elif opcio == 3:
        szam = szorzas(szam)
-       print(f"Jelenlegi összeg: {szam}\n")
-       menu = True
     elif opcio == 4:
        szam = osztas(szam)
-       print(f"Jelenlegi összeg: {szam}\n")
-       menu = True
     elif opcio == 5:
        szam = hatvany(szam)
-       print(f"Jelenlegi összeg: {szam}\n")
-       menu = True
     elif opcio == 6:
        szam = maradek(szam)
-       print(f"Jelenlegi összeg (a maradék): {szam}\n")
-       menu = True
     elif opcio == 7:
        szam = 0
-       print(f"Jelenlegi összeg: {szam}\n")
-       menu = True
     elif opcio == 8:
         break
+
+    menu = True
+    print(f"Jelenlegi összeg: {szam}\n")
