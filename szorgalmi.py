@@ -10,6 +10,7 @@ elif valasz == 2:
     print("Találjon ki 12db szót (személy-, helyszín-, étel- vagy tárgyak neve)!\nNe használjon gyűjtőszavakat, számokat, illetve szavaknak a többes számát az értelmes szöveg érdekében!\n")
 else:
     print("Hiba! Nem megfelelő számot adott meg.")
+    exit()
 
 szo1 = input("1. szó: ")
 szo2 = input("2. szó: ")
