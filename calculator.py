@@ -6,12 +6,15 @@ def osszeadas(szam1):
             try:
                 print("Jelenlegi összeg:", szam1, end="\n")
                 szam2 = float(input("Mennyit szeretnél hozzáadni?\n"))
+                szam1 += szam2
                 break
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
     uj_terminal()
-    szam1 += szam2
     return szam1
 
 def kivonas(szam1):
@@ -19,12 +22,15 @@ def kivonas(szam1):
             try:
                 print("Jelenlegi összeg:", szam1, end="\n")
                 szam2 = float(input("Mennyit szeretnél kivonni?\n"))
+                szam1 -= szam2
                 break
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
     uj_terminal()
-    szam1 -= szam2
     return szam1
 
 def szorzas(szam1):
@@ -32,12 +38,15 @@ def szorzas(szam1):
             try:
                 print("Jelenlegi összeg:", szam1, end="\n")
                 szam2 = float(input("Mennyivel szeretnél szorozni?\n"))
+                szam1 *= szam2
                 break
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
     uj_terminal()
-    szam1 *= szam2
     return szam1
 
 def osztas(szam1):
@@ -45,15 +54,18 @@ def osztas(szam1):
             try:
                 print("Jelenlegi összeg:", szam1, end="\n")
                 szam2 = float(input("Mennyivel szeretnél osztani?\n"))
+                szam1 /= szam2
                 break
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
             except ZeroDivisionError:
                  uj_terminal()
                  print("Hiba! Nullával nem lehet osztani. Próbálja újra!")
     uj_terminal()
-    szam1 /= szam2
     return szam1
 
 def hatvany(szam1):
@@ -61,12 +73,15 @@ def hatvany(szam1):
             try:
                 print("Jelenlegi összeg:", szam1, end="\n")
                 szam2 = float(input("Hányadik hatványra emeljük?\n"))
+                szam1 **= szam2
                 break
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
     uj_terminal()
-    szam1 **= szam2
     return szam1
 
 def maradek(szam1):
@@ -74,15 +89,18 @@ def maradek(szam1):
             try:
                 print("Jelenlegi összeg:", szam1, end="\n")
                 szam2 = float(input("Mennyivel szeretne osztani, hogy maradékot kapjon?\n"))
+                szam1 %= szam2
                 break
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
             except ZeroDivisionError:
                  uj_terminal()
                  print("Hiba! Nullával nem lehet osztani. Próbálja újra!")
     uj_terminal()
-    szam1 %= szam2
     return szam1
 
 menu = True
@@ -94,10 +112,13 @@ while True:
             except ValueError:
                 uj_terminal()
                 print("Hiba! Nem érvényes számot adott meg. Próbálja újra!")
+            except OverflowError:
+                uj_terminal()
+                print("Hiba! Túl nagy szám az összeg. Próbálja újra!")
 while True:
     if menu == True:
         menu = False
-        print(f"Jelenlegi összeg: {szam}\n\n1 -> Összeadás\n2 -> Kivonás\n3 -> Szorzás\n4 -> Osztás\n5 -> Hatványozás\n6 -> Maradék számítás\n7 -> Törlés\n8 -> Kilépés\n")
+        print(f"Jelenlegi összeg: {szam}\n\n1 -> Összeadás\n2 -> Kivonás\n3 -> Szorzás\n4 -> Osztás\n5 -> Hatványozás\n6 -> Maradék számítás\n7 -> Törlés (Nullázás)\n8 -> Kilépés\n")
         while True:
             try:
                 opcio = int(input("Válasszon az alábbiak közül egy műveletet!\n"))
