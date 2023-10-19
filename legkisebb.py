@@ -7,4 +7,4 @@ if b < a:
 if c < a:
     a = c
 
-print(f"A legkisebb szám a {a}")
+print(f"A legkisebb szám a(z) {a}")
