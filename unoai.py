@@ -26,10 +26,11 @@ kartyak = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "pt", "pf
  "k0", "k1", "k2", "k3", "k4", "k5", "k6", "k7", "k8", "k9", "kt", "kf", "kp2",
  "z0", "z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8", "z9", "zt", "zf", "zp2"]
 
-#Lap listák
+#listák/változók
 
 jatekos_kartyak = []
 robot_kartyak = []
+megjelenitett = []
 
 #Konzol színek
 
@@ -66,25 +67,8 @@ for i in range(robotok):
 #Játékos kártyáinak kiírása megformázva (definíció)
 #Játékos kártya letétel
 
-megjelenitett = []
-
 def jatekos_kartyai(utolso_lap):
   global megjelenitett
-  def megjelenites():
-    global megjelenitett
-    megjelenitett = []
-    for i in range(len(jatekos_kartyak)):
-      if str(jatekos_kartyak[i]).startswith("p"):
-        megjelenitett += [piros + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
-      
-      if str(jatekos_kartyak[i]).startswith("s"):
-        megjelenitett += [sarga + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
-
-      if str(jatekos_kartyak[i]).startswith("k"):
-        megjelenitett += [kek + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
-      
-      if str(jatekos_kartyak[i]).startswith("z"):
-        megjelenitett += [zold + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
   megjelenites()
   print(f"\n{lila}{kartyak_neve[utolso_lap].upper()}\n")
   print(f"{lila}A kártyáid:")
@@ -118,6 +102,22 @@ def jatekos_kartyai(utolso_lap):
     else:
       print("Ezt a kártyát nem használhatod!")
 
+def megjelenites():
+    global megjelenitett
+    megjelenitett = []
+    for i in range(len(jatekos_kartyak)):
+      if str(jatekos_kartyak[i]).startswith("p"):
+        megjelenitett += [piros + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+      
+      if str(jatekos_kartyak[i]).startswith("s"):
+        megjelenitett += [sarga + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+
+      if str(jatekos_kartyak[i]).startswith("k"):
+        megjelenitett += [kek + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+      
+      if str(jatekos_kartyak[i]).startswith("z"):
+        megjelenitett += [zold + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+
 
 def robotok_kartyai(robot_szama, utolso_lap):
   for lap in range(len(robot_kartyak[robot_szama])):
@@ -133,7 +133,6 @@ utolso_kartya = kartyak[random.randint(0, 51)]
 while utolso_kartya in ["pt", "pf", "pp2", "st", "sf", "sp2", "kt", "kf", "kp2", "zt", "zf", "zp2"]:
     utolso_kartya = kartyak[random.randint(0, 51)]
 
-gyoztes = []
 
 while True:
   utolso_kartya = jatekos_kartyai(utolso_kartya)
