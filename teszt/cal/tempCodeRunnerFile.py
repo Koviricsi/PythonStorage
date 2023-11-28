@@ -1,0 +1,2 @@
+
+display.config(text=content)
