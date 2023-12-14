@@ -49,9 +49,12 @@ print("\033c")
 while True:
   try: 
     robotok = int(input("Mennyi robot legyen?\nVálasz (egész szám):"))
+    if robotok <= 0:
+      print("\033cHibás adat!")
+      continue
     break
   except:
-    print("Hibás adat!")
+    print("\033cHibás adat!")
 
 for i in range(1, 7+1):
     jatekos_kartyak.append(kartyak[random.randint(0, 51)])
@@ -64,86 +67,161 @@ for i in range(robotok):
 
   robot_kartyak.append(ideiglenes)
 
+#Játékos kártyáinak megjelenítése(definíció)
+
+def megjelenites():
+  global megjelenitett
+  megjelenitett = []
+  for i in range(len(jatekos_kartyak)):
+    if str(jatekos_kartyak[i]).startswith("p"):
+      megjelenitett += [piros + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+    
+    if str(jatekos_kartyak[i]).startswith("s"):
+      megjelenitett += [sarga + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+
+    if str(jatekos_kartyak[i]).startswith("k"):
+      megjelenitett += [kek + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+    
+    if str(jatekos_kartyak[i]).startswith("z"):
+      megjelenitett += [zold + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+
+#Egy bizonyos lap megjelenítése(definíció)
+
+def megjelenites_egy_lap(lap):
+  if str(lap).startswith("p"):
+    return piros + kartyak_neve[lap].capitalize()
+  
+  if str(lap).startswith("s"):
+    return sarga + kartyak_neve[lap].capitalize()
+
+  if str(lap).startswith("k"):
+    return kek + kartyak_neve[lap].capitalize()
+  
+  if str(lap).startswith("z"):
+    return zold + kartyak_neve[lap].capitalize()
+  
+
+#Fordító kártyák logikája
+
+
+jelenlegi = -1
+fordito = False
+
+def forditas():
+  global jelenlegi
+  global fordito
+  if fordito == False:
+    if jelenlegi == robotok-1:
+      jelenlegi = -1
+    else:
+      jelenlegi += 1
+  else:
+    if jelenlegi == -1:
+      jelenlegi = robotok-1
+    else:
+      jelenlegi -= 1
+
+
+
 #Játékos kártyáinak kiírása megformázva (definíció)
 #Játékos kártya letétel
 
-def jatekos_kartyai(utolso_lap):
+def jatekos_kartyai():
+  global utolso_kartya
   global megjelenitett
-  megjelenites()
-  print(f"\n{lila}{kartyak_neve[utolso_lap].upper()}\n")
-  print(f"{lila}A kártyáid:")
-  for i in range(len(megjelenitett)):
-    print(f"{lila}{i+1}.", megjelenitett[i], end=f"{alap}")
-  print(f"{lila}Írja be a \"0\" parancsot új kártya húzásáshoz!\n")
+  global jelenlegi
+  global fordito
+  if jelenlegi == -1:
+    megjelenites()
+    print(f"\n{lila}Utoljára letett kártya: {megjelenites_egy_lap(utolso_kartya)}\n{lila}")
+    print(f"{lila}A kártyáid:")
+    for i in range(len(megjelenitett)):
+      print(f"{lila}{i+1}.", megjelenitett[i], end=f"{alap}")
+    print(f"{lila}Írja be a \"0\" parancsot új kártya húzásáshoz!\n")
 
-  lap = None
-  ideiglenes = None
+    lap = None
+    ideiglenes = None
 
-  while True:
-    try: 
-      lap = int(input("Melyik kártyád szeretnéd felhasználni?\n"))
-      if lap < 0 or lap > len(jatekos_kartyak):
+    while True:
+      try: 
+        lap = int(input("Melyik kártyád szeretnéd felhasználni?\n"))
+        if lap < 0 or lap > len(jatekos_kartyak):
+          print("Hibás adat!")
+          continue
+      except:
+        print("Hibás adat!")
         continue
-    except:
-      print("Hibás adat!")
 
-    if lap == 0:
-      jatekos_kartyak.append(kartyak[random.randint(0, 51)])
-      megjelenites()
-      print("Ezt húztad: "+megjelenitett[-1]+f"{lila}")
-      return utolso_lap
-    
-    ideiglenes = lap
-    lap = jatekos_kartyak[lap-1]
-
-    if lap.startswith(utolso_lap[0]) or lap.endswith(utolso_lap[-1]):
-      jatekos_kartyak.pop(ideiglenes-1)
-      return lap
-    else:
-      print("Ezt a kártyát nem használhatod!")
-
-def megjelenites():
-    global megjelenitett
-    megjelenitett = []
-    for i in range(len(jatekos_kartyak)):
-      if str(jatekos_kartyak[i]).startswith("p"):
-        megjelenitett += [piros + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+      if lap == 0:
+        jatekos_kartyak.append(kartyak[random.randint(0, 51)])
+        megjelenites()
+        print(f"\033c{lila}Ezt húztad: {megjelenites_egy_lap(jatekos_kartyak[-1])}{lila}\n")
+        time.sleep(1)
+        forditas()
+        return utolso_kartya
       
-      if str(jatekos_kartyak[i]).startswith("s"):
-        megjelenitett += [sarga + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+      ideiglenes = lap
+      lap = jatekos_kartyak[lap-1]
 
-      if str(jatekos_kartyak[i]).startswith("k"):
-        megjelenitett += [kek + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
-      
-      if str(jatekos_kartyak[i]).startswith("z"):
-        megjelenitett += [zold + kartyak_neve[jatekos_kartyak[i]].capitalize() + f"{fekete} | "]
+      if lap.startswith(utolso_kartya[0]) or lap.endswith(utolso_kartya[-1]):
+        jatekos_kartyak.pop(ideiglenes-1)
+        print("\033c")
+        if lap in ["pf","sf","kf","zf"]:
+          if fordito == False:
+            fordito = True
+          else:
+            fordito = False
+        forditas()
+        return lap
+      else:
+        print("Ezt a kártyát nem használhatod!")
+  else:
+    return utolso_kartya
 
 
-def robotok_kartyai(robot_szama, utolso_lap):
+#Robotok logikája (definíció)
+
+def robotok_kartyai(robot_szama):
+  global utolso_kartya
   for lap in range(len(robot_kartyak[robot_szama])):
-    if str(robot_kartyak[robot_szama][lap]).startswith(utolso_lap[0]) or str(robot_kartyak[robot_szama][lap]).endswith(utolso_lap[-1]):
-      utolso_lap = robot_kartyak[robot_szama][lap]
+    if str(robot_kartyak[robot_szama][lap]).startswith(utolso_kartya[0]) or str(robot_kartyak[robot_szama][lap]).endswith(utolso_kartya[-1]):
+      utolso_kartya = robot_kartyak[robot_szama][lap]
       robot_kartyak[robot_szama].pop(lap)
-      return utolso_lap
+      return utolso_kartya
   robot_kartyak[robot_szama].append(kartyak[random.randint(0, 51)])
-  return utolso_lap
+  return utolso_kartya
 
+
+
+#Random kezdő kártya sorsolás
 
 utolso_kartya = kartyak[random.randint(0, 51)]
 while utolso_kartya in ["pt", "pf", "pp2", "st", "sf", "sp2", "kt", "kf", "kp2", "zt", "zf", "zp2"]:
     utolso_kartya = kartyak[random.randint(0, 51)]
 
+#A játék "motorja"
 
 while True:
-  utolso_kartya = jatekos_kartyai(utolso_kartya)
+  utolso_kartya = jatekos_kartyai()
   if len(jatekos_kartyak) == 0:
-      print(f"Gratulálok, győztél!")
+      print(f"{sarga}Gratulálok, győztél!")
       exit()
+
   for i in range(robotok):
-    utolso_kartya = robotok_kartyai(i, utolso_kartya)
-    time.sleep(0.4)
-    if len(robot_kartyak[i]) == 0:
-      print(f"A(z) {i}. robot után az utolsó kártya a {utolso_kartya}-ra(re) változott meg.")
-      print(f"A(z) {i}. robot győzött!")
-      exit()
-    print(f"A(z) {i}. robot után az utolsó kártya a {utolso_kartya}-ra(re) változott meg.")
+    if jelenlegi == i:
+      utolso_kartya = robotok_kartyai(i)
+
+      time.sleep(0.0)
+
+      if len(robot_kartyak[i]) == 0:
+        print(f"{lila}A(z) {i+1}. robot után az utolsó kártya a {megjelenites_egy_lap(utolso_kartya)}-ra(re){lila} változott meg.")
+        print(f"{lila}A(z) {i+1}. robot győzött!")
+        exit()
+      print(f"{lila}A(z) {i+1}. robot után az utolsó kártya a {megjelenites_egy_lap(utolso_kartya)}-ra(re){lila} változott meg.")
+
+      if utolso_kartya in ["pf","sf","kf","zf"]:
+        if fordito == False:
+          fordito = True
+        else:
+          fordito = False
+      forditas()
