@@ -39,17 +39,17 @@ szinek = {"p" : f"{PIROS}(Piros)", "k" : f"{KEK}(Kék)", "z" : f"{ZOLD}(Zöld)",
 
 jatekos_kartyak = random.choices(list(kartyak.keys()), k=7)
 robot_kartyak = []
+unok = []
 
 #Változók
 
-robot_mennyiseg = 0
-sebesseg = 0
-felso_kartya = ""
+robot_mennyiseg = None
+sebesseg = None
+felso_kartya = None
 jelenlegi = -1
 fordito = False
 plusz_mennyiseg = 1
-uno = False
-regi = 0
+vege = None
 
 #Definíciók
   
@@ -177,8 +177,9 @@ def jatekos_kezeles():
                     fordito = False
 
                 if uj_lap in ["pt","st","kt","zt"]:
-                  print(f"{SARGA}Kitiltottad ebből a körből a következő játékost.\n")
+                  print(f"{SARGA}Kitiltottad ebből a körből a", end=" ")
                   kovetkezo()
+                  print(f"{jelenlegi+1}. Robotot.")
 
                 if uj_lap == "bszinvb":
                   szin = szinvalasztas()
@@ -209,7 +210,6 @@ def jatekos_kezeles():
 
 def robot_kezeles():
   global robot_kartyak, felso_kartya, plusz_mennyiseg, fordito
-
   for lap in robot_kartyak[jelenlegi]:
      
 #Ha speciális kártya van legfelül (vagy nem lejárt kártya)(robot oldal)
@@ -266,12 +266,12 @@ def robot_kezeles():
           print(f"{LILA}A(z) {jelenlegi+1}. robot {kartyak.get(lap)}{LILA}-t rakott le.{ALAP}\n")
 
           if lap in ["pt","st","kt","zt"]:
-            print(f"{LILA}A(z) {jelenlegi+1}. robot kitiltotta ebből a körből a ", end="")
+            print(f"{SARGA}A(z) {jelenlegi+1}. robot kitiltotta ebből a körből a ", end="")
             kovetkezo()
             if jelenlegi != -1:
-              print(f"{jelenlegi+1}. játékost.{ALAP}\n")
+              print(f"{jelenlegi+1}. Robotot.{ALAP}\n")
             if jelenlegi == -1:
-              print(f"{PIROS}Kitiltottak ebből a körből.{ALAP}\n")
+              print(f"játékost!\n{PIROS}Kitiltottak ebből a körből.{ALAP}\n")
 
           kovetkezo()
           return lap
@@ -286,9 +286,9 @@ def robot_kezeles():
       robot_kartyak[jelenlegi].append(random.choice(list(kartyak.keys())))
     if "ap4a" in felso_kartya:
       szin = felso_kartya[0]
-      print(f"{LILA}A(z) {jelenlegi+1}. robot nem tudott lerakni kártyát, ezért felhúzott {plusz_mennyiseg-1} db lapot. A felső kártya maradt a(z) {kartyak.get(felso_kartya[1:])} {szinek.get(szin)}{ALAP}\n")
+      print(f"{LILA}A(z) {jelenlegi+1}. robot nem tudott lerakni kártyát, ezért felhúzott {PIROS}{plusz_mennyiseg-1} db{LILA} lapot. A felső kártya maradt a(z) {kartyak.get(felso_kartya[1:])} {szinek.get(szin)}{ALAP}\n")
     else:
-      print(f"{LILA}A(z) {jelenlegi+1}. robot nem tudott lerakni kártyát, ezért felhúzott {plusz_mennyiseg-1} db lapot. A felső kártya maradt a(z) {kartyak.get(felso_kartya)}{ALAP}\n")
+      print(f"{LILA}A(z) {jelenlegi+1}. robot nem tudott lerakni kártyát, ezért felhúzott {PIROS}{plusz_mennyiseg-1} db{LILA} lapot. A felső kártya maradt a(z) {kartyak.get(felso_kartya)}{ALAP}\n")
 
 #Ha csak egy kártyát kell felhúzni
 
@@ -330,10 +330,12 @@ while True:
   except:
     print(f"{TORLES}Hibás adat!")
 
-#Robotok kártyáinak kisorsolása
+#Robotok kártyáinak kisorsolása, "unok" lista beállítása
 
 for i in range(robot_mennyiseg):
   robot_kartyak.append(random.choices(list(kartyak.keys()), k=7))
+  unok.append(False)
+unok.append(False)
 
 #Kezdő felső kártya kisorsolása
 
@@ -342,10 +344,10 @@ while felso_kartya in ["pt", "pf", "pp2", "st", "sf", "sp2", "kt", "kf", "kp2", 
     felso_kartya = random.choice(list(kartyak.keys()))
 
 #Játék főciklusa
-
+    
 print(TORLES)
-while True:
 
+while True:
 #Játékos "motorjának" meghívása 
 
   felso_kartya = jatekos_kezeles()
@@ -362,24 +364,30 @@ while True:
         print(kartyak.get(robot_kartyak[i][j]), end=" | ")
       print(LILA)
     break
-  elif len(jatekos_kartyak) == 1 and uno == False:
-    print(f"{LILA}Játékos mondja: {SARGA}U{ZOLD}N{PIROS}O{KEK}!")
-    uno = True
+  elif len(jatekos_kartyak) == 1 and unok[0] == False:
+    print(f"{LILA}Játékos mondja: {SARGA}U{ZOLD}N{PIROS}O{KEK}!\n")
+    unok[0] = True
   elif len(jatekos_kartyak) > 1:
-    uno = False
+    unok[0] = False
 
 #Játék sebessége (lassítása)
 
   time.sleep(sebesseg)
 
 #Robot(ok) "motorjának" meghívása 
-
   felso_kartya = robot_kezeles()
 
 #Robot ellenőrzése (nyert-e, kiálthat-e uno-t)
-
-  if len(robot_kartyak[regi]) == 1:
-    print(f"{LILA}{regi}. Robot mondja: {SARGA}U{ZOLD}N{PIROS}O{KEK}!")
-  elif len(robot_kartyak[regi]) == 0:
-    print(f"{PIROS}Vesztettél! A(z) {regi}. Robot nyert.")
+  for i in range(robot_mennyiseg):
+    if len(robot_kartyak[i]) == 1 and unok[i+1] == False:
+      print(f"{LILA}{i+1}. Robot mondja: {SARGA}U{ZOLD}N{PIROS}O{KEK}!\n")
+      unok[i+1] = True
+    elif len(robot_kartyak[i]) == 0:
+      print(f"{PIROS}Vesztettél! A(z) {i+1}. Robot nyert.\n")
+      print(ALAP)
+      vege = True
+      break
+    elif len(robot_kartyak[i]) > 1:
+      unok[i+1] = False
+  if vege:
     break
