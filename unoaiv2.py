@@ -37,7 +37,7 @@ szinek = {"p" : f"{PIROS}(Piros)", "k" : f"{KEK}(Kék)", "z" : f"{ZOLD}(Zöld)",
 
 #Listák
 
-jatekos_kartyak = random.choices(list(kartyak.keys()), k=7)
+jatekos_kartyak = None
 robot_kartyak = []
 unok = []
 
@@ -45,6 +45,7 @@ unok = []
 
 robot_mennyiseg = None
 sebesseg = None
+kezdo_mennyiseg = None
 felso_kartya = None
 jelenlegi = -1
 fordito = False
@@ -322,18 +323,30 @@ while True:
     print(f"{TORLES}Hibás adat!")
 
   try: 
-    sebesseg = int(input("Mennyire legyen gyors a játék?\nVálasz (egész pozitív szám, nagyobb szám -> lassabb, min.: 0):"))
+    sebesseg = int(input("Mennyire legyen gyors a játék?\nVálasz (egész pozitív szám, nagyobb szám -> lassabb játékmenet, min.: 0):"))
     if sebesseg < 0:
+      print(f"{TORLES}Hibás adat!")
+      continue
+  except:
+    print(f"{TORLES}Hibás adat!")
+
+  try: 
+    kezdo_mennyiseg = int(input("Mennyi kártyával kezdjünk?\nVálasz (egész pozitív szám, min.: 1):"))
+    if kezdo_mennyiseg < 1:
       print(f"{TORLES}Hibás adat!")
       continue
     break
   except:
     print(f"{TORLES}Hibás adat!")
 
+
+
+jatekos_kartyak = random.choices(list(kartyak.keys()), k=kezdo_mennyiseg)
+
 #Robotok kártyáinak kisorsolása, "unok" lista beállítása
 
 for i in range(robot_mennyiseg):
-  robot_kartyak.append(random.choices(list(kartyak.keys()), k=7))
+  robot_kartyak.append(random.choices(list(kartyak.keys()), k=kezdo_mennyiseg))
   unok.append(False)
 unok.append(False)
 
